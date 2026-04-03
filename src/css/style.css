@@ -1,3 +1,8 @@
+body {
+  background: white;
+  color: black;
+}
+
 h1 {
   text-align: center;
   margin-top: 20px;
@@ -6,8 +11,13 @@ h1 {
 button {
   font-weight: bold;
   font-size: 15px;
-  background-color:aquamarine;
+  background-color: aquamarine;
 }
+
+.container {
+  margin-top: 50px;
+}
+
 .panel {
   padding-top: 40px;
   display: grid;
@@ -24,11 +34,64 @@ button {
   height: 40px;
 }
 
-#multiplay, #plus, #minus, #result, #divide {
-    background-color: yellow;
+#multiplay,
+#plus,
+#minus,
+#divide,
+#bracket_left,
+#bracket_right,
+#procent,
+#dot {
+  background-color: yellow;
 }
 
-#del {
-    background-color:red;
+#minus,
+#dot,
+#multiplay {
+  font-size: 19px;
 }
 
+#result {
+  background-color: orange;
+  grid-column: span 4;
+}
+
+#del,
+#AC {
+  background-color: red;
+}
+
+body.dark {
+  background: black;
+  color: white;
+}
+
+body.dark .theme{
+  background: white;
+  color: black;
+}
+
+body.dark .exit{
+  background: white;
+  color: black;
+}
+
+.theme, .exit{
+  margin-top: 250px;
+  display: flex;
+  position: absolute;
+  background-color: black;
+  color: white;
+  width: 150px;
+  height: 75px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-around;
+}
+.theme {
+  left: 100px;
+}
+
+.exit {
+  right: 100px;
+}

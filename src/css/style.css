@@ -1,6 +1,11 @@
 body {
   background: white;
   color: black;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1 {
@@ -12,26 +17,51 @@ button {
   font-weight: bold;
   font-size: 15px;
   background-color: aquamarine;
+  min-height: 50px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+button:active {
+  opacity: 0.8;
 }
 
 .container {
-  margin-top: 50px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
-
+.calculator {
+  display: block;
+  max-width: 150px;
+  height: auto;
+  margin: 0 auto;
+}
 .panel {
-  padding-top: 40px;
+  padding-top: 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   margin: 0 auto;
-  max-width: 600px;
-  min-height: 400px;
+  width: 90%;
+  max-width: 400px;
 }
 
 .text {
   display: block;
-  margin: 0 auto;
-  width: 300px;
-  height: 40px;
+  margin: 0 auto 20px auto;
+  width: 90%;
+  max-width: 380px;
+  height: 50px;
+  font-size: 24px;
+  text-align: right;
+  padding-right: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 #multiplay,
@@ -66,32 +96,74 @@ body.dark {
   color: white;
 }
 
-body.dark .theme{
+body.dark .theme {
   background: white;
   color: black;
 }
 
-body.dark .exit{
+body.dark .exit {
   background: white;
   color: black;
 }
 
-.theme, .exit{
-  margin-top: 250px;
+.theme,
+.exit {
+  margin: 0;
   display: flex;
-  position: absolute;
   background-color: black;
   color: white;
-  width: 150px;
-  height: 75px;
+  width: 120px;
+  height: 50px;
   cursor: pointer;
   align-items: center;
-  justify-content: space-around;
-}
-.theme {
-  left: 100px;
+  justify-content: center;
+  border-radius: 8px;
 }
 
-.exit {
-  right: 100px;
+.container:nth-of-type(2) {
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  height: auto;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(100, 100, 100);
+  color: white;
+  align-items: center;
+  padding: 20px 50px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+@media (max-width: 600px) {
+  footer {
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+}
+
+.support {
+  display: flex;
+  gap: 15px;
+}
+
+.icons {
+  width: 22px;
+  height: 22px;
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: 0.3s;
 }

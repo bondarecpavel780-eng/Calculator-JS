@@ -57,4 +57,4 @@ const switcher = document.querySelector('.theme');
 const end = document.querySelector('.exit');
 end.addEventListener('click', ()=>{
   close();
-})
+});

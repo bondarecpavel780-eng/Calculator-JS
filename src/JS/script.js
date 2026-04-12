@@ -5,32 +5,61 @@ window.addEventListener('DOMContentLoaded', function () {
 
   btns.forEach((button) => {
     button.addEventListener("click", () => {
+      // button delete last symbol
       if (button.id == "del") {
         display.value = display.value.slice(0, -1);
       }
+      // button delete all
       else if (button.id === "AC") {
         display.value = "";
       }
+      // count the percentage
       else if (button.id === "procent") {
         try {
-          if (display.value) {
-            let res = new Function("return " + display.value)();
-            if (res === Infinity || res === -Infinity || Number.isNaN(res)) {
-              display.value = "Ошибка";
+          let val = display.value;
+          if (!val) return;
+          let match = val.match(/^(.*)([+\-*/])(\d+\.?\d*)$/);// any symbol any times and find op
+          if (match) {
+            // save the received data into variables 
+            let baseExpr = match[1];
+            let operator = match[2];
+            let percentNum = parseFloat(match[3]);
+
+            let baseValue = new Function("return " + baseExpr)();
+            let percentValue;
+
+            // calculate the percentage by sign.
+            // logic for +, - and other operations
+            if (operator === "+" || operator === "-") {
+              percentValue = (baseValue * percentNum) / 100;
             } else {
-              display.value = (res / 100);
+              percentValue = percentNum / 100;
             }
+            // return result 
+            let finalExpression = baseExpr + operator + percentValue;
+            let res = new Function("return " + finalExpression)();
+
+            if (res === Infinity || res === -Infinity || Number.isNaN(res)) {
+              display.value = "Error";
+            } else {
+              display.value = res;
+            }
+          } else {
+            let res = new Function("return " + val)() / 100;
+            display.value = res;
           }
         } catch (error) {
           display.value = "Error";
         }
       }
+      // button result 
       else if (button.id === "result") {
+        if (display.value.trim() === "Error" || !display.value.trim()) return; // fixed bug "Function Error()"
         try {
           if (display.value) {
-            let res = new Function("return " + display.value)();
+            let res = new Function("return " + display.value.trim())();
             if (res === Infinity || res === -Infinity || Number.isNaN(res)) {
-              display.value = "Ошибка";
+              display.value = "Error";
             } else {
               display.value = res;
             }
@@ -39,24 +68,37 @@ window.addEventListener('DOMContentLoaded', function () {
           display.value = "Error";
         }
       } else {
-        if (display.value === "Error" || display.value === "Error") {
-          display.value = "";
+        if (display.value.trim() === "Error") display.value = "";
+      // double operator protection
+        const ops = ['+', '-', '*', '/', '.'];
+        let last = display.value.slice(-1);
+        let next = button.innerText;
+
+        if (ops.includes(last) && ops.includes(next)) {
+          display.value = display.value.slice(0, -1) + next;
+        } else {
+          display.value += next;
         }
-        display.value += button.innerText;
       }
     });
   });
 
+  // switcher 
   const switcher = document.querySelector('.theme');
 
   switcher.addEventListener('click', () => {
     document.body.classList.toggle('dark');
-
   });
+
+  // button exit
 
   const end = document.querySelector('.exit');
   end.addEventListener('click', () => {
-    close();
+    display.value = "Bye!";
+    setTimeout(() => {
+      display.value = "";
+      close();
+    }, 2000);
   });
 
   //Modal Window
@@ -77,17 +119,27 @@ window.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
   }
 
-  modalCloseBtn.addEventListener('click',closeModal);
-    
+  modalCloseBtn.addEventListener('click', closeModal);
+
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       closeModal();
     }
   });
 
-  document.addEventListener('keydown', (e)=>{
-    if(e.code === "Escape" && modal.classList.contains('show')) {
+  document.addEventListener('keydown', (e) => {
+    if (e.code === "Escape" && modal.classList.contains('show')) {
       closeModal();
     }
   });
+});
+
+// add buttons from the keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === '=') {
+    document.getElementById('result').click();
+  }
+  else if (e.key === 'Escape') {
+    document.getElementById('AC').click();
+  }
 });

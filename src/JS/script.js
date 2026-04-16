@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded', function () {
             if (res === Infinity || res === -Infinity || Number.isNaN(res)) {
               display.value = "Error";
             } else {
-              display.value = res;
+              display.value = parseFloat(res.toFixed(5));
             }
           }
         } catch (error) {
@@ -104,25 +104,115 @@ window.addEventListener('DOMContentLoaded', function () {
   //Modal Window
 
   const modalTrigger = document.querySelector('[data-modal]'),
-    modal = document.querySelector('.modal'),
-    modalCloseBtn = document.querySelector('[data-close]');
+    modal = document.querySelector('.modal');
 
-  modalTrigger.addEventListener('click', () => {
+function openModal(){
     modal.classList.add('show');
     modal.classList.remove('hide');
     document.body.style.overflow = 'hidden';
-  });
+}
+modalTrigger.addEventListener('click', () => {
+  openModal();
+});
 
+// Forms 
+const forms = document.querySelectorAll('form');
+
+const message = {
+    loading: {
+        img: 'img/loading_cat.jpg',
+        text: 'loading...'
+    },
+    success: {
+        img: 'img/cat.jpg',
+        text: ''
+    },
+    fail: {
+        img: 'img/sad_cat.jpg',
+        text: 'Something went wrong('
+    }
+};
+
+forms.forEach(item => {
+  postData(item);
+});
+
+function postData(form) {
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    const statusMessage = document.createElement('div');
+    statusMessage.classList.add('status');
+   statusMessage.innerHTML = `
+    <img src="${message.loading.img}" alt="status">
+    <div style="margin-top: 10px;">${message.loading.text}</div> `;
+    form.append(statusMessage);
+
+    const request = new XMLHttpRequest();
+    request.open('POST', 'server.php');
+
+    request.setRequestHeader('Content-type', 'application/json');
+    const formData = new FormData(form);
+
+    const object = {};
+    formData.forEach(function(value, key){
+      object[key] = value;
+    });
+
+    const json = JSON.stringify(object);
+
+    request.send(json);
+
+    request.addEventListener('load', ()=>{
+      if(request.status === 200){
+        console.log(request.response);
+        showThanksModal(message.success);
+        form.reset();
+          statusMessage.remove();
+      } else {
+        showThanksModal(message.fail);
+        statusMessage.remove();
+      }
+    })
+  });
+}
+
+function showThanksModal(message) {
+  const prevModalDialog = document.querySelector('.modal__dialog');
+
+  prevModalDialog.classList.add('hide');
+  openModal();
+
+  const thanksModal = document.createElement('div');
+  thanksModal.classList.add('modal__dialog');
+  thanksModal.innerHTML = `
+  <div class="modal__content">
+            <div class="modal__close" data-close>&times;</div>
+            <div class="modal__title">
+              <img src="${message.img}" alt="статус">
+              <div style="margin-top: 10px;">${message.text}</div>
+            </div>
+        </div>
+    `;
+
+  document.querySelector('.modal').append(thanksModal);
+  setTimeout(()=>{
+    thanksModal.remove();
+    prevModalDialog.classList.add('show');
+    prevModalDialog.classList.remove('hide');
+    closeModal();
+  },4000)
+}
+
+// Close Modal Window
   function closeModal() {
     modal.classList.add('hide');
     modal.classList.remove('show');
     document.body.style.overflow = '';
   }
 
-  modalCloseBtn.addEventListener('click', closeModal);
-
   modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+    if (e.target === modal || e.target.getAttribute('data-close')=='') {
       closeModal();
     }
   });

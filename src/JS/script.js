@@ -161,20 +161,20 @@ window.addEventListener('DOMContentLoaded', function () {
       fetch('server.php', {
         method: 'POST',
         headers: {
-          'Content-type' : 'application/json',
+          'Content-type': 'application/json',
         },
         body: JSON.stringify(object)
       }).then(data => data.text())
-      .then(data => {
+        .then(data => {
           console.log(data);
           showThanksModal(message.success);
           statusMessage.remove();
-      }).catch(()=>{
+        }).catch(() => {
           showThanksModal(message.fail);
           statusMessage.remove();
-      }).finally(()=>{
+        }).finally(() => {
           form.reset();
-      });
+        })
     });
   }
 

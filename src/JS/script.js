@@ -86,10 +86,28 @@ window.addEventListener('DOMContentLoaded', function () {
   // switcher 
   const switcher = document.querySelector('.theme');
 
-  switcher.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-  });
+  if (localStorage.getItem('theme') === 'dark') {
+  document.body.classList.add('dark');
+}
 
+// 2. Обрабатываем клик по переключателю
+switcher.addEventListener('click', () => {
+  // Переключаем класс (добавляем, если его нет, и убираем, если он есть)
+  document.body.classList.toggle('dark');
+  
+  // 3. Сохраняем выбор пользователя
+  // Проверяем, добавился ли класс 'dark' к body
+  if (document.body.classList.contains('dark')) {
+    // Если класс есть, сохраняем в память значение 'dark'
+    localStorage.setItem('theme', 'dark');
+  } else {
+    // Если класса нет (пользователь вернулся на светлую тему), 
+    // удаляем запись из хранилища
+    localStorage.removeItem('theme'); 
+    
+    // Как вариант, можно использовать: localStorage.setItem('theme', 'light');
+  }
+});
   // button exit
 
   const end = document.querySelector('.exit');

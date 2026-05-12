@@ -85,4 +85,4 @@
 
 }
 
-module.exports = calculator;
+export default calculator;

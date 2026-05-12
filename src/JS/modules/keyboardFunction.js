@@ -11,4 +11,4 @@ document.addEventListener('keydown', (e) => {
 });
 }
 
-module.exports = keyboardFunction;
+export default keyboardFunction;

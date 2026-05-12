@@ -12,13 +12,18 @@
   },
   "license": "ISC",
   "author": "Pavel Bondarets",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
+    "start-db": "json-server --watch db.json --port 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.5",
+    "babel-loader": "^10.1.1",
     "json-server": "^1.0.0-beta.15",
+    "webpack": "^5.106.2",
     "webpack-cli": "^7.0.2"
   }
 }

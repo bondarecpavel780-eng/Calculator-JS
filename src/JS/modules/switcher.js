@@ -20,4 +20,4 @@ function switcher() {
     });
 }
 
-module.exports = switcher; 
+export default switcher; 

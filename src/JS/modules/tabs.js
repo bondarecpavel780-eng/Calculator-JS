@@ -1,7 +1,6 @@
 // Data for message 
+import { closeModal, openModal } from './modalWindow.js';
 function tabs() {
-    const ModalWindow = require('./modalWindow');
-    const { openModal, closeModal } = ModalWindow();
     
     const message = {
         loading: {
@@ -49,12 +48,13 @@ function tabs() {
                     'Content-type': 'application/json',
                 },
                 body: JSON.stringify(object)
-            }).then(data => data.text())
+            }).then(data => data.json())
                 .then(data => {
-                    console.log(data);
+                    console.log('Saved to db:', data);
                     showThanksModal(message.success);
                     statusMessage.remove();
-                }).catch(() => {
+                }).catch((err) => {
+                    console.error('Error:', err);
                     showThanksModal(message.fail);
                     statusMessage.remove();
                 }).finally(() => {
@@ -67,7 +67,7 @@ function tabs() {
         const prevModalDialog = document.querySelector('.modal__dialog');
         prevModalDialog.classList.remove('show');
         prevModalDialog.classList.add('hide');
-        openModal();
+        openModal('.modal');
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -91,4 +91,4 @@ function tabs() {
     };
 }
 
-module.exports = tabs;
+export default tabs;
